@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/nav/NavBar";
 import { Box, Flex, Text } from "@chakra-ui/react";
 
 const TextGradient = styled(Text)`
