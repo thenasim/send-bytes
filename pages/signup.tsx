@@ -14,47 +14,40 @@ import {
   AiFillFacebook,
   AiFillTwitterCircle,
 } from "react-icons/ai";
-import { useEffect } from "react";
-import { GesturesFeature } from "framer-motion";
 
 type Inputs = {
+  first_name: string;
+  last_name: string;
+  username: string;
   email: string;
   password: string;
 };
 
-const Login: React.FC = () => {
+const SignUp: React.FC = () => {
   const { register, handleSubmit } = useForm<Inputs>();
   const toast = useToast();
 
   const submitFunc = async (data: Inputs) => {
     try {
-      await auth.signInWithEmailAndPassword(data.email, data.password);
+      await auth.createUserWithEmailAndPassword(data.email, data.password);
 
       toast({
-        title: `Success`,
-        description: "Login successfully to account",
+        title: "Succes creating account",
+        description: "Your account has been created successfully",
         status: "success",
         duration: 3000,
         isClosable: true,
       });
-    } catch {
+    } catch (err) {
       toast({
         title: "Error occured",
-        description: "Email or password does not match",
+        description: err.message,
         status: "error",
         duration: 3000,
         isClosable: true,
       });
     }
   };
-
-  useEffect(() => {
-    async function getUser() {
-      const user = await auth.currentUser;
-      console.log(user?.email);
-    }
-    getUser();
-  }, []);
 
   return (
     <Flex justify="center" align="center" width="full" height="100vh">
@@ -67,10 +60,33 @@ const Login: React.FC = () => {
         borderRadius="md"
       >
         <Box mb={6}>
-          <Text fontSize="xl">Login page</Text>
+          <Text fontSize="xl">Sign up</Text>
         </Box>
         <Box as="form" onSubmit={handleSubmit(submitFunc)}>
           <Stack spacing={4} direction="column">
+            <Flex>
+              <Box mr={[1, 2]}>
+                <Text fontSize="medium" fontWeight="medium">
+                  First Name
+                </Text>
+                <Input name="first_name" type="text" ref={register} />
+              </Box>
+              <Box>
+                <Text fontSize="medium" fontWeight="medium">
+                  Last Name
+                </Text>
+                <Input name="last_name" type="text" ref={register} />
+              </Box>
+            </Flex>
+            <Box>
+              <Text fontSize="medium" fontWeight="medium">
+                Username
+              </Text>
+              <Input isInvalid name="username" type="text" ref={register} />
+              <Text fontSize="xs" color="crimson" letterSpacing="wide">
+                Username is too short minimum 2 char needed
+              </Text>
+            </Box>
             <Box>
               <Text fontSize="medium" fontWeight="medium">
                 Email
@@ -91,14 +107,14 @@ const Login: React.FC = () => {
                 width="100%"
                 type="submit"
               >
-                Sign in
+                Sign Up
               </Button>
             </Box>
           </Stack>
         </Box>
         <Box pt={6}>
           <Text fontSize="xs" color="gray.500" letterSpacing="wide">
-            Or login with
+            Or sign up with
           </Text>
           <Stack mt={2} direction={["column", "row"]}>
             <Button leftIcon={<AiFillGoogleCircle />} variant="outline">
@@ -117,4 +133,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default SignUp;
