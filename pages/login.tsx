@@ -1,9 +1,10 @@
 import { auth } from "../utils/firebase";
 import { useForm } from "react-hook-form";
-import { Box, Text, Stack, Input, Button, useToast } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { Box, Text, Stack, Button, useToast } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import FormContainer from "../components/form/FormContainer";
 import ProviderAuth from "../components/form/ProviderAuth";
+import InputField from "../components/common/InputField";
 
 type Inputs = {
   email: string;
@@ -11,13 +12,16 @@ type Inputs = {
 };
 
 const Login: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const { register, handleSubmit } = useForm<Inputs>();
   const toast = useToast();
 
   const submitFunc = async (data: Inputs) => {
+    setIsLoading(true);
     try {
       await auth.signInWithEmailAndPassword(data.email, data.password);
 
+      setIsLoading(false);
       toast({
         title: `Success`,
         description: "Login successfully to account",
@@ -26,6 +30,7 @@ const Login: React.FC = () => {
         isClosable: true,
       });
     } catch {
+      setIsLoading(false);
       toast({
         title: "Error occured",
         description: "Email or password does not match",
@@ -51,21 +56,16 @@ const Login: React.FC = () => {
       </Box>
       <Box as="form" onSubmit={handleSubmit(submitFunc)}>
         <Stack spacing={4} direction="column">
-          <Box>
-            <Text fontSize="medium" fontWeight="medium">
-              Email
-            </Text>
-            <Input name="email" type="email" ref={register} />
-          </Box>
-          <Box>
-            <Text fontSize="medium" fontWeight="medium">
-              Password
-            </Text>
-            <Input name="password" type="password" ref={register} />
-          </Box>
+          <InputField ref={register} label="Email" type="text" name="email" />
+          <InputField
+            ref={register}
+            label="Password"
+            type="password"
+            name="password"
+          />
           <Box>
             <Button
-              isLoading={false}
+              isLoading={isLoading}
               loadingText="signing"
               colorScheme="teal"
               width="100%"
