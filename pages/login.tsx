@@ -1,21 +1,9 @@
 import { auth } from "../utils/firebase";
 import { useForm } from "react-hook-form";
-import {
-  Flex,
-  Box,
-  Text,
-  Stack,
-  Input,
-  Button,
-  useToast,
-} from "@chakra-ui/react";
-import {
-  AiFillGoogleCircle,
-  AiFillFacebook,
-  AiFillTwitterCircle,
-} from "react-icons/ai";
+import { Box, Text, Stack, Input, Button, useToast } from "@chakra-ui/react";
 import { useEffect } from "react";
-import { GesturesFeature } from "framer-motion";
+import FormContainer from "../components/form/FormContainer";
+import ProviderAuth from "../components/form/ProviderAuth";
 
 type Inputs = {
   email: string;
@@ -57,63 +45,39 @@ const Login: React.FC = () => {
   }, []);
 
   return (
-    <Flex justify="center" align="center" width="full" height="100vh">
-      <Box
-        p={4}
-        m={4}
-        maxW="sm"
-        width="full"
-        borderWidth="1px"
-        borderRadius="md"
-      >
-        <Box mb={6}>
-          <Text fontSize="xl">Login page</Text>
-        </Box>
-        <Box as="form" onSubmit={handleSubmit(submitFunc)}>
-          <Stack spacing={4} direction="column">
-            <Box>
-              <Text fontSize="medium" fontWeight="medium">
-                Email
-              </Text>
-              <Input name="email" type="email" ref={register} />
-            </Box>
-            <Box>
-              <Text fontSize="medium" fontWeight="medium">
-                Password
-              </Text>
-              <Input name="password" type="password" ref={register} />
-            </Box>
-            <Box>
-              <Button
-                isLoading={false}
-                loadingText="signing"
-                colorScheme="teal"
-                width="100%"
-                type="submit"
-              >
-                Sign in
-              </Button>
-            </Box>
-          </Stack>
-        </Box>
-        <Box pt={6}>
-          <Text fontSize="xs" color="gray.500" letterSpacing="wide">
-            Or login with
-          </Text>
-          <Stack mt={2} direction={["column", "row"]}>
-            <Button leftIcon={<AiFillGoogleCircle />} variant="outline">
-              Google
-            </Button>
-            <Button leftIcon={<AiFillFacebook />} variant="outline">
-              Facebook
-            </Button>
-            <Button leftIcon={<AiFillTwitterCircle />} variant="outline">
-              Twitter
-            </Button>
-          </Stack>
-        </Box>
+    <FormContainer>
+      <Box mb={6}>
+        <Text fontSize="xl">Login page</Text>
       </Box>
-    </Flex>
+      <Box as="form" onSubmit={handleSubmit(submitFunc)}>
+        <Stack spacing={4} direction="column">
+          <Box>
+            <Text fontSize="medium" fontWeight="medium">
+              Email
+            </Text>
+            <Input name="email" type="email" ref={register} />
+          </Box>
+          <Box>
+            <Text fontSize="medium" fontWeight="medium">
+              Password
+            </Text>
+            <Input name="password" type="password" ref={register} />
+          </Box>
+          <Box>
+            <Button
+              isLoading={false}
+              loadingText="signing"
+              colorScheme="teal"
+              width="100%"
+              type="submit"
+            >
+              Sign in
+            </Button>
+          </Box>
+        </Stack>
+      </Box>
+      <ProviderAuth msg="Or login with" />
+    </FormContainer>
   );
 };
 
