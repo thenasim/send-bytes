@@ -22,5 +22,5 @@ export const signUpSchema = yup.object().shape({
   password: yup
     .string()
     .min(6, "Minimum 6 character")
-    .max(32, "Minimum 32 character"),
+    .max(32, "Maximum 32 character"),
 });

@@ -1,12 +1,12 @@
+import dynamic from "next/dynamic";
 import { Box, Text, Stack, Button, useToast } from "@chakra-ui/react";
-import { auth } from "../utils/firebase";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signUpSchema } from "../schema/validation";
 import FormContainer from "../components/form/FormContainer";
-import ProviderAuth from "../components/form/ProviderAuth";
 import InputField from "../components/common/InputField";
 import { useState } from "react";
+import { getFirebase } from "../utils/lazyFirebase";
 
 type Inputs = {
   first_name: string;
@@ -15,6 +15,10 @@ type Inputs = {
   email: string;
   password: string;
 };
+
+const LazyProviderAuth = dynamic(
+  () => import("../components/form/ProviderAuth")
+);
 
 const SignUp: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,7 +31,9 @@ const SignUp: React.FC = () => {
   const submitFunc = async (data: Inputs) => {
     setIsLoading(true);
     try {
-      await auth.createUserWithEmailAndPassword(data.email, data.password);
+      await (await getFirebase())
+        .auth()
+        .createUserWithEmailAndPassword(data.email, data.password);
 
       setIsLoading(false);
       toast({
@@ -107,7 +113,7 @@ const SignUp: React.FC = () => {
           </Box>
         </Stack>
       </Box>
-      <ProviderAuth msg="Or signup with" />
+      <LazyProviderAuth msg="Or signup with" />
     </FormContainer>
   );
 };

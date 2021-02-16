@@ -1,15 +1,19 @@
-import { auth } from "../utils/firebase";
+import dynamic from "next/dynamic";
 import { useForm } from "react-hook-form";
 import { Box, Text, Stack, Button, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import FormContainer from "../components/form/FormContainer";
-import ProviderAuth from "../components/form/ProviderAuth";
 import InputField from "../components/common/InputField";
+import { getFirebase } from "../utils/lazyFirebase";
 
 type Inputs = {
   email: string;
   password: string;
 };
+
+const LazyProviderAuth = dynamic(
+  () => import("../components/form/ProviderAuth")
+);
 
 const Login: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -19,7 +23,9 @@ const Login: React.FC = () => {
   const submitFunc = async (data: Inputs) => {
     setIsLoading(true);
     try {
-      await auth.signInWithEmailAndPassword(data.email, data.password);
+      await (await getFirebase())
+        .auth()
+        .signInWithEmailAndPassword(data.email, data.password);
 
       setIsLoading(false);
       toast({
@@ -43,7 +49,7 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     async function getUser() {
-      const user = await auth.currentUser;
+      const user = await (await getFirebase()).auth().currentUser;
       console.log(user?.email);
     }
     getUser();
@@ -76,7 +82,7 @@ const Login: React.FC = () => {
           </Box>
         </Stack>
       </Box>
-      <ProviderAuth msg="Or login with" />
+      <LazyProviderAuth msg="Or login with" />
     </FormContainer>
   );
 };
