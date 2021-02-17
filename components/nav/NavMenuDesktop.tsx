@@ -7,7 +7,7 @@ const NavMenuDesktop: React.FC = () => {
       <NLink href="/">
         <Link>Home</Link>
       </NLink>
-      <NLink href="/">
+      <NLink href="/chat">
         <Link>Chat</Link>
       </NLink>
       <NLink href="/login">

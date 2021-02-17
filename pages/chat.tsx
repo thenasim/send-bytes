@@ -1,10 +1,26 @@
 import { Flex, Box, Text } from "@chakra-ui/react";
-
+import { PuffLoader } from "react-spinners";
 import ChatHeader from "../components/chat/ChatHeader";
 import SearchMessage from "../components/chat/SearchMessage";
 import Messages from "../components/chat/Messages";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 
 const Chat: React.FC = () => {
+  const user = useCurrentUser();
+
+  if (!user) {
+    return (
+      <Flex
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+        width="full"
+      >
+        <PuffLoader />
+      </Flex>
+    );
+  }
+
   return (
     <Flex>
       <Box

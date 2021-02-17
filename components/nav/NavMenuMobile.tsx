@@ -30,7 +30,7 @@ const NavMenuMobile: React.FC = () => {
                 Home
               </Link>
             </NLink>
-            <NLink href="/">
+            <NLink href="/chat">
               <Link
                 p={8}
                 mt={2}

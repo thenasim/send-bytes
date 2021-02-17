@@ -1,10 +1,12 @@
 import { useForm } from "react-hook-form";
 import { Box, Text, Stack, Button, useToast } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import FormContainer from "../components/form/FormContainer";
 import InputField from "../components/common/InputField";
 import ProviderAuth from "../components/form/ProviderAuth";
 import { getFirebase } from "../utils/lazyFirebase";
+import { useRouter } from "next/router";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 
 type Inputs = {
   email: string;
@@ -12,25 +14,21 @@ type Inputs = {
 };
 
 const Login: React.FC = () => {
+  const user = useCurrentUser();
   const [isLoading, setIsLoading] = useState(false);
   const { register, handleSubmit } = useForm<Inputs>();
+  const router = useRouter();
   const toast = useToast();
 
   const submitFunc = async (data: Inputs) => {
     setIsLoading(true);
     try {
-      await (await getFirebase())
+      const firebase = await getFirebase();
+      await firebase
         .auth()
         .signInWithEmailAndPassword(data.email, data.password);
 
-      setIsLoading(false);
-      toast({
-        title: `Success`,
-        description: "Login successfully to account",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
+      router.push("/chat");
     } catch {
       setIsLoading(false);
       toast({
@@ -43,13 +41,9 @@ const Login: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    async function getUser() {
-      const user = await (await getFirebase()).auth().currentUser;
-      console.log(user?.email);
-    }
-    getUser();
-  }, []);
+  if (user) {
+    router.push("/chat");
+  }
 
   return (
     <FormContainer>
