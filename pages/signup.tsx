@@ -1,10 +1,10 @@
-import dynamic from "next/dynamic";
 import { Box, Text, Stack, Button, useToast } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signUpSchema } from "../schema/validation";
 import FormContainer from "../components/form/FormContainer";
 import InputField from "../components/common/InputField";
+import ProviderAuth from "../components/form/ProviderAuth";
 import { useState } from "react";
 import { getFirebase } from "../utils/lazyFirebase";
 
@@ -15,10 +15,6 @@ type Inputs = {
   email: string;
   password: string;
 };
-
-const LazyProviderAuth = dynamic(
-  () => import("../components/form/ProviderAuth")
-);
 
 const SignUp: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -113,7 +109,7 @@ const SignUp: React.FC = () => {
           </Box>
         </Stack>
       </Box>
-      <LazyProviderAuth msg="Or signup with" />
+      <ProviderAuth msg="Or signup with" />
     </FormContainer>
   );
 };

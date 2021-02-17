@@ -1,19 +1,15 @@
-import dynamic from "next/dynamic";
 import { useForm } from "react-hook-form";
 import { Box, Text, Stack, Button, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import FormContainer from "../components/form/FormContainer";
 import InputField from "../components/common/InputField";
+import ProviderAuth from "../components/form/ProviderAuth";
 import { getFirebase } from "../utils/lazyFirebase";
 
 type Inputs = {
   email: string;
   password: string;
 };
-
-const LazyProviderAuth = dynamic(
-  () => import("../components/form/ProviderAuth")
-);
 
 const Login: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -82,7 +78,7 @@ const Login: React.FC = () => {
           </Box>
         </Stack>
       </Box>
-      <LazyProviderAuth msg="Or login with" />
+      <ProviderAuth msg="Or login with" />
     </FormContainer>
   );
 };
