@@ -7,7 +7,12 @@ const ChatHeader: React.FC = () => {
   return (
     <Flex px={4} justify="space-between">
       <Flex align="center">
-        <Image w="10" h="10" src="https://i.pravatar.cc/100" rounded="full" />
+        <Image
+          w="10"
+          h="10"
+          src="https://i.ibb.co/3TGxn9S/me.png"
+          rounded="full"
+        />
         <Text ml={3} fontSize="x-large" fontWeight="bold">
           Chats
         </Text>

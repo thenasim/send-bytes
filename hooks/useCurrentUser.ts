@@ -3,7 +3,7 @@ import { getFirebase } from "../utils/lazyFirebase";
 import type firebase from "firebase";
 
 export function useCurrentUser() {
-  const [user, setUser] = useState<firebase.User | null>(null);
+  const [user, setUser] = useState<firebase.User | null | undefined>(undefined);
 
   useEffect(() => {
     async function getUser() {
