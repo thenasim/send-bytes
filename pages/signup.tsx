@@ -7,6 +7,8 @@ import InputField from "../components/common/InputField";
 import ProviderAuth from "../components/form/ProviderAuth";
 import { useState } from "react";
 import { getFirebase } from "../utils/lazyFirebase";
+import { FIRESTORE } from "../constants";
+import { useRouter } from "next/router";
 
 type Inputs = {
   first_name: string;
@@ -22,22 +24,38 @@ const SignUp: React.FC = () => {
     // @ts-ignore
     resolver: yupResolver(signUpSchema),
   });
+  const router = useRouter();
   const toast = useToast();
 
-  const submitFunc = async (data: Inputs) => {
+  const submitFunc = async ({
+    first_name,
+    last_name,
+    username,
+    email,
+    password,
+  }: Inputs) => {
     setIsLoading(true);
     try {
-      const { auth } = await getFirebase();
-      await auth.createUserWithEmailAndPassword(data.email, data.password);
-      console.log(data);
+      const { auth, db } = await getFirebase();
 
-      setIsLoading(false);
-      toast({
-        title: "Succes creating account",
-        description: "Your account has been created successfully",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
+      const userRef = db.collection(FIRESTORE.users).doc(username);
+
+      userRef.get().then(async (docSnap) => {
+        if (!docSnap.exists) {
+          await auth.createUserWithEmailAndPassword(email, password);
+          userRef.set({ first_name, last_name, email, username });
+
+          router.push("/chat");
+        } else {
+          setIsLoading(false);
+          toast({
+            title: "Username already exists",
+            description: "Please select a new username",
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
+        }
       });
     } catch (err) {
       setIsLoading(false);
