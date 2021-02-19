@@ -7,8 +7,8 @@ export function useCurrentUser() {
 
   useEffect(() => {
     async function getUser() {
-      const firebase = await getFirebase();
-      firebase.auth().onAuthStateChanged((user) => {
+      const { auth } = await getFirebase();
+      auth.onAuthStateChanged((user) => {
         setUser(user);
       });
     }

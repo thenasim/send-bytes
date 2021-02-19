@@ -23,10 +23,8 @@ const Login: React.FC = () => {
   const submitFunc = async (data: Inputs) => {
     setIsLoading(true);
     try {
-      const firebase = await getFirebase();
-      await firebase
-        .auth()
-        .signInWithEmailAndPassword(data.email, data.password);
+      const { auth } = await getFirebase();
+      await auth.signInWithEmailAndPassword(data.email, data.password);
 
       router.push("/chat");
     } catch {

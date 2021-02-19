@@ -10,11 +10,14 @@ const firebaseConfig = {
 
 export const getFirebase = async () => {
   const firebase = await (await import("firebase/app")).default;
-  await Promise.all([import("firebase/auth")]);
+  await Promise.all([import("firebase/auth"), import("firebase/firestore")]);
 
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
   }
 
-  return firebase;
+  return {
+    auth: firebase.auth(),
+    db: firebase.firestore(),
+  };
 };

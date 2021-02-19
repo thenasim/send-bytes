@@ -27,9 +27,9 @@ const SignUp: React.FC = () => {
   const submitFunc = async (data: Inputs) => {
     setIsLoading(true);
     try {
-      await (await getFirebase())
-        .auth()
-        .createUserWithEmailAndPassword(data.email, data.password);
+      const { auth } = await getFirebase();
+      await auth.createUserWithEmailAndPassword(data.email, data.password);
+      console.log(data);
 
       setIsLoading(false);
       toast({
