@@ -17,6 +17,7 @@ export const getFirebase = async () => {
   }
 
   return {
+    firebase,
     auth: firebase.auth(),
     db: firebase.firestore(),
   };

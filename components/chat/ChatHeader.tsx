@@ -1,9 +1,24 @@
-import { FiEdit } from "react-icons/fi";
+import { FiLogOut } from "react-icons/fi";
 import { CgOptions } from "react-icons/cg";
 import { IoMdPersonAdd } from "react-icons/io";
 import { Flex, Text, Image, IconButton, Tooltip } from "@chakra-ui/react";
+import { getFirebase } from "../../utils/lazyFirebase";
+import { useRouter } from "next/router";
 
 const ChatHeader: React.FC = () => {
+  const router = useRouter();
+  const handleLogout = async () => {
+    const { auth } = await getFirebase();
+    auth
+      .signOut()
+      .then(() => {
+        router.push("/login");
+      })
+      .catch(() => {
+        console.error("Something weird happened");
+      });
+  };
+
   return (
     <Flex px={4} justify="space-between">
       <Flex align="center">
@@ -38,7 +53,7 @@ const ChatHeader: React.FC = () => {
           />
         </Tooltip>
 
-        <Tooltip label="new message" rounded="md">
+        {/* <Tooltip label="new message" rounded="md">
           <IconButton
             ml={2}
             colorScheme="gray"
@@ -47,7 +62,16 @@ const ChatHeader: React.FC = () => {
             rounded="full"
             icon={<FiEdit />}
           />
-        </Tooltip>
+        </Tooltip> */}
+        <IconButton
+          ml={2}
+          colorScheme="gray"
+          aria-label="new message"
+          size="md"
+          rounded="full"
+          onClick={handleLogout}
+          icon={<FiLogOut />}
+        />
       </Flex>
     </Flex>
   );
