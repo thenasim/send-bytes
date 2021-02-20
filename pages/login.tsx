@@ -7,20 +7,16 @@ import ProviderAuth from "../components/form/ProviderAuth";
 import { getFirebase } from "../utils/lazyFirebase";
 import { useRouter } from "next/router";
 import { useCurrentUser } from "../hooks/useCurrentUser";
-
-type Inputs = {
-  email: string;
-  password: string;
-};
+import type { SignInFieldType } from "../types";
 
 const Login: React.FC = () => {
   const user = useCurrentUser();
   const [isLoading, setIsLoading] = useState(false);
-  const { register, handleSubmit } = useForm<Inputs>();
+  const { register, handleSubmit } = useForm<SignInFieldType>();
   const router = useRouter();
   const toast = useToast();
 
-  const submitFunc = async (data: Inputs) => {
+  const submitFunc = async (data: SignInFieldType) => {
     setIsLoading(true);
     try {
       const { auth } = await getFirebase();

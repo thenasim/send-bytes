@@ -6,57 +6,41 @@ import FormContainer from "../components/form/FormContainer";
 import InputField from "../components/common/InputField";
 import ProviderAuth from "../components/form/ProviderAuth";
 import { useState } from "react";
-import { getFirebase } from "../utils/lazyFirebase";
-import { FIRESTORE } from "../constants";
 import { useRouter } from "next/router";
-
-type Inputs = {
-  first_name: string;
-  last_name: string;
-  username: string;
-  email: string;
-  password: string;
-};
+import type { SignUpFieldType } from "../types";
+import {
+  createNewUser,
+  isUsernameExists,
+  setUserProfileData,
+} from "../utils/db";
 
 const SignUp: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const { register, handleSubmit, errors } = useForm<Inputs>({
+  const { register, handleSubmit, errors } = useForm<SignUpFieldType>({
     // @ts-ignore
     resolver: yupResolver(signUpSchema),
   });
   const router = useRouter();
   const toast = useToast();
 
-  const submitFunc = async ({
-    first_name,
-    last_name,
-    username,
-    email,
-    password,
-  }: Inputs) => {
+  const submitFunc = async (data: SignUpFieldType) => {
     setIsLoading(true);
     try {
-      const { auth, db } = await getFirebase();
-
-      const userRef = db.collection(FIRESTORE.users).doc(username);
-
-      userRef.get().then(async (docSnap) => {
-        if (!docSnap.exists) {
-          await auth.createUserWithEmailAndPassword(email, password);
-          userRef.set({ first_name, last_name, email, username });
-
-          router.push("/chat");
-        } else {
-          setIsLoading(false);
-          toast({
-            title: "Username already exists",
-            description: "Please select a new username",
-            status: "error",
-            duration: 3000,
-            isClosable: true,
-          });
-        }
-      });
+      const { exists, ref } = await isUsernameExists(data.username);
+      if (exists) {
+        setIsLoading(false);
+        toast({
+          title: "Username already exists",
+          description: "Please select a new username",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      } else {
+        await setUserProfileData(data, ref);
+        await createNewUser(data);
+        router.push("/chat");
+      }
     } catch (err) {
       setIsLoading(false);
       toast({

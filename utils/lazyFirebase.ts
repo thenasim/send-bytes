@@ -1,3 +1,5 @@
+import type firebase from "firebase";
+
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_F_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_F_AUTH_DOMAIN,
@@ -8,17 +10,24 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_F_MESEARUMENT_ID,
 };
 
-export const getFirebase = async () => {
+async function loadFirebase() {
   const firebase = await (await import("firebase/app")).default;
   await Promise.all([import("firebase/auth"), import("firebase/firestore")]);
+  return firebase;
+}
 
-  if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
+let myfirebase: typeof firebase;
+
+export const getFirebase = async () => {
+  myfirebase = myfirebase || (await loadFirebase());
+
+  if (!myfirebase.apps.length) {
+    myfirebase.initializeApp(firebaseConfig);
   }
 
   return {
-    firebase,
-    auth: firebase.auth(),
-    db: firebase.firestore(),
+    firebase: myfirebase,
+    auth: myfirebase.auth(),
+    db: myfirebase.firestore(),
   };
 };
