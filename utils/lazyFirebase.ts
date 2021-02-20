@@ -13,6 +13,9 @@ const firebaseConfig = {
 async function loadFirebase() {
   const firebase = await (await import("firebase/app")).default;
   await Promise.all([import("firebase/auth"), import("firebase/firestore")]);
+
+  firebase.initializeApp(firebaseConfig);
+
   return firebase;
 }
 
@@ -20,10 +23,6 @@ let myfirebase: typeof firebase;
 
 export const getFirebase = async () => {
   myfirebase = myfirebase || (await loadFirebase());
-
-  if (!myfirebase.apps.length) {
-    myfirebase.initializeApp(firebaseConfig);
-  }
 
   return {
     firebase: myfirebase,
