@@ -1,10 +1,11 @@
-import { Flex, Box, Text } from "@chakra-ui/react";
+import { Flex, Box } from "@chakra-ui/react";
 import { PuffLoader } from "react-spinners";
 import ChatHeader from "../components/chat/ChatHeader";
 import SearchMessage from "../components/chat/SearchMessage";
 import Messages from "../components/chat/Messages";
 import { useRouter } from "next/router";
 import { useCurrentUser } from "../hooks/useCurrentUser";
+import MessageBox from "../components/chat/MessageBox";
 
 const Chat: React.FC = () => {
   const user = useCurrentUser();
@@ -30,9 +31,7 @@ const Chat: React.FC = () => {
           <SearchMessage />
           <Messages />
         </Box>
-        <Box p={4} w="full" display={["none", "flex"]}>
-          <Text>Chat Details</Text>
-        </Box>
+        <MessageBox />
       </Flex>
     );
   }
