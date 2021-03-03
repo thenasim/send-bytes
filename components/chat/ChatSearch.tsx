@@ -1,6 +1,6 @@
 import { Box, Input } from "@chakra-ui/react";
 
-const SearchMessage: React.FC = () => {
+const ChatSearch: React.FC = () => {
   return (
     <Box px={4} mt={6}>
       <Input colorScheme="gray" placeholder="search messages"></Input>
@@ -8,4 +8,4 @@ const SearchMessage: React.FC = () => {
   );
 };
 
-export default SearchMessage;
+export default ChatSearch;

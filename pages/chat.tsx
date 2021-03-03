@@ -1,11 +1,9 @@
-import { Flex, Box } from "@chakra-ui/react";
-import { PuffLoader } from "react-spinners";
-import ChatHeader from "../components/chat/ChatHeader";
-import SearchMessage from "../components/chat/SearchMessage";
-import Messages from "../components/chat/Messages";
+import { Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useCurrentUser } from "../hooks/useCurrentUser";
-import MessageBox from "../components/chat/MessageBox";
+import Message from "../components/chat/Message";
+import SideBar from "../components/chat/SideBar";
+import PageLoader from "../components/common/PageLoader";
 
 const Chat: React.FC = () => {
   const user = useCurrentUser();
@@ -18,34 +16,13 @@ const Chat: React.FC = () => {
   if (user) {
     return (
       <Flex>
-        <Box
-          py={4}
-          borderRightColor="gray.100"
-          borderRightWidth="1px"
-          w={["full", 360]}
-          h="100vh"
-          overflowY="scroll"
-          flexShrink={0}
-        >
-          <ChatHeader />
-          <SearchMessage />
-          <Messages />
-        </Box>
-        <MessageBox />
+        <SideBar />
+        <Message />
       </Flex>
     );
   }
 
-  return (
-    <Flex
-      justifyContent="center"
-      alignItems="center"
-      height="100vh"
-      width="full"
-    >
-      <PuffLoader />
-    </Flex>
-  );
+  return <PageLoader />;
 };
 
 export default Chat;
