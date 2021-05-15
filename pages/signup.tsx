@@ -37,8 +37,8 @@ const SignUp: React.FC = () => {
           isClosable: true,
         });
       } else {
-        await setUserProfileData(data, ref);
-        await createNewUser(data);
+        const { user } = await createNewUser(data);
+        await setUserProfileData(data, user?.uid, ref);
         router.push("/chat");
       }
     } catch (err) {

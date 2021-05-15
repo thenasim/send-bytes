@@ -14,6 +14,7 @@ export async function isUsernameExists(username: string) {
 
 export async function setUserProfileData(
   { first_name, last_name, username, email }: SignUpFieldType,
+  uid: string | undefined,
   ref: DocRefType
 ) {
   await ref.set({
@@ -21,10 +22,11 @@ export async function setUserProfileData(
     last_name,
     email,
     username,
+    uid,
   });
 }
 
 export async function createNewUser(data: SignUpFieldType) {
   const { auth } = await getFirebase();
-  await auth.createUserWithEmailAndPassword(data.email, data.password);
+  return await auth.createUserWithEmailAndPassword(data.email, data.password);
 }
