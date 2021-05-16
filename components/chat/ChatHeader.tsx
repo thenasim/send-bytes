@@ -63,15 +63,17 @@ const ChatHeader: React.FC = () => {
             icon={<FiEdit />}
           />
         </Tooltip> */}
-        <IconButton
-          ml={2}
-          colorScheme="gray"
-          aria-label="new message"
-          size="md"
-          rounded="full"
-          onClick={handleLogout}
-          icon={<FiLogOut />}
-        />
+        <Tooltip label="Logout" rounded="md">
+          <IconButton
+            ml={2}
+            colorScheme="gray"
+            aria-label="new message"
+            size="md"
+            rounded="full"
+            onClick={handleLogout}
+            icon={<FiLogOut />}
+          />
+        </Tooltip>
       </Flex>
     </Flex>
   );

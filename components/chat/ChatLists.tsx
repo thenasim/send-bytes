@@ -1,12 +1,14 @@
-import { data } from "../../data/ChatData";
 import { Box } from "@chakra-ui/react";
 import ChatMsg from "./ChatMsg";
+import { useStore } from "../../store/store";
 
 const ChatList: React.FC = () => {
+  const chats = useStore((state) => state.chatlists);
+
   return (
     <Box px={2} mt={4}>
-      {data.person.map((msg) => (
-        <ChatMsg {...msg} key={msg.id} />
+      {chats.map((msg) => (
+        <ChatMsg {...msg} key={msg.username} />
       ))}
     </Box>
   );

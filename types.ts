@@ -14,3 +14,10 @@ export type SignInFieldType = {
 };
 
 export type DocRefType = firebase.firestore.DocumentReference<firebase.firestore.DocumentData>;
+
+export type ChatStateType = {
+  name: string;
+  lastMessage: string;
+  username: string;
+  avator: string;
+};

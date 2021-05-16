@@ -1,12 +1,17 @@
 import { Flex, Box, Text, Image } from "@chakra-ui/react";
+import { useStore } from "../../store/store";
 
 interface Props {
   name: string;
   lastMessage: string;
   avator: string;
+  username: string;
 }
 
-const ChatMsg: React.FC<Props> = ({ name, lastMessage, avator }) => {
+const ChatMsg: React.FC<Props> = (props) => {
+  const { name, lastMessage, avator } = props;
+  const setSelectedChat = useStore((state) => state.setSelectedChat);
+
   return (
     <Flex
       align="center"
@@ -15,6 +20,7 @@ const ChatMsg: React.FC<Props> = ({ name, lastMessage, avator }) => {
       rounded="lg"
       _hover={{ backgroundColor: "gray.50" }}
       cursor="pointer"
+      onClick={() => setSelectedChat(props)}
     >
       <Image w="12" h="12" src={avator} rounded="full" />
       <Box ml={4}>

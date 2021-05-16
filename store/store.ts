@@ -1,12 +1,19 @@
 import create from "zustand";
-import type firebase from "firebase";
+import { data } from "../data/ChatData";
+import { ChatStateType } from "../types";
 
 type State = {
-  user: firebase.User | null;
-  setUser: (u: firebase.User) => void;
+  username: string;
+  setUsername: (u: string) => void;
+  chatlists: ChatStateType[];
+  selectedChat: ChatStateType | undefined;
+  setSelectedChat: (u: ChatStateType) => void;
 };
 
 export const useStore = create<State>((set) => ({
-  user: null,
-  setUser: (u: firebase.User) => set(() => ({ user: u })),
+  username: "",
+  setUsername: (u: string) => set(() => ({ username: u })),
+  chatlists: data,
+  selectedChat: undefined,
+  setSelectedChat: (c: ChatStateType) => set(() => ({ selectedChat: c })),
 }));

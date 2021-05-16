@@ -14,7 +14,6 @@ export async function isUsernameExists(username: string) {
 
 export async function setUserProfileData(
   { first_name, last_name, username, email }: SignUpFieldType,
-  uid: string | undefined,
   ref: DocRefType
 ) {
   await ref.set({
@@ -22,11 +21,21 @@ export async function setUserProfileData(
     last_name,
     email,
     username,
-    uid,
   });
 }
 
 export async function createNewUser(data: SignUpFieldType) {
   const { auth } = await getFirebase();
   return await auth.createUserWithEmailAndPassword(data.email, data.password);
+}
+
+export async function getUsername(email: string) {
+  const { db } = await getFirebase();
+  const userRef = db.collection(FIRESTORE.users).where("email", "==", email);
+  const snapshot = await userRef.get();
+
+  if (snapshot.docs.length) {
+    return snapshot.docs[0].data().username;
+  }
+  return null;
 }
