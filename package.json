@@ -34,7 +34,7 @@
     "react-use": "15.3.8",
     "swr": "0.4.2",
     "yup": "0.32.9",
-    "zustand": "3.5.1"
+    "zustand": "3.5.4"
   },
   "devDependencies": {
     "@commitlint/cli": "11.0.0",
